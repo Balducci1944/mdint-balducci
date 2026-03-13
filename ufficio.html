@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDINT — Pannello Ufficio · Bruno Balducci S.r.l.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#b5253a;--red-dark:#8a1a2b;--red-light:#f9eaec;--g50:#f8f8f8;--g100:#f0f0f0;--g200:#e2e2e2;--g300:#c8c8c8;--g400:#a0a0a0;--g600:#555;--g800:#222;--r:7px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--g800);font-size:14px;min-height:100vh}
+.ph{background:#fff;border-bottom:3px solid var(--red);padding:14px 24px 12px;box-shadow:0 2px 10px rgba(0,0,0,.09)}
+.phi{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.phi img{height:50px}
+.phm{text-align:right}
+.phm h1{font-size:18px;font-weight:700;color:var(--red);letter-spacing:1px}
+.phm p{font-size:11px;color:var(--g400);margin-top:2px}
+.con{max-width:680px;margin:0 auto;padding:28px 16px 40px}
+.intro{background:var(--red-light);border:1px solid #e8bec4;border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px}
+.intro-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.intro-text h2{font-size:15px;font-weight:600;color:var(--red-dark);margin-bottom:4px}
+.intro-text p{font-size:13px;color:var(--g600);line-height:1.5}
+.card{background:#fff;border-radius:10px;border:1px solid var(--g200);box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px;overflow:hidden}
+.ch{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--g200);background:var(--g50)}
+.cn{width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.ct{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--g600)}
+.cb{padding:20px 18px}
+.fg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg.s2{grid-column:span 2}
+.lbl{font-size:11px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.4px}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{font-family:'Inter',sans-serif;font-size:14px;padding:9px 11px;border:1px solid var(--g200);border-radius:var(--r);color:var(--g800);background:#fff;width:100%;outline:none;transition:border-color .18s,box-shadow .18s}
+input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(181,37,58,.1)}
+.btn-gen{width:100%;padding:14px;background:var(--red);border:none;border-radius:var(--r);color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.btn-gen:hover{background:var(--red-dark)}
+/* RESULT */
+.result{display:none;background:#fff;border-radius:10px;border:2px solid var(--red);box-shadow:0 2px 16px rgba(181,37,58,.15);margin-bottom:20px;overflow:hidden}
+.result.show{display:block}
+.res-head{background:var(--red);padding:14px 20px;display:flex;align-items:center;gap:10px}
+.res-head h3{color:#fff;font-size:14px;font-weight:600}
+.res-body{padding:20px}
+.link-box{display:flex;align-items:center;gap:8px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);padding:10px 12px;margin-bottom:16px}
+.link-text{flex:1;font-size:12px;color:var(--g600);word-break:break-all;font-family:monospace}
+.btn-copy{padding:7px 14px;background:var(--red);border:none;border-radius:5px;color:#fff;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .15s}
+.btn-copy:hover{background:var(--red-dark)}
+.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.btn-wa{padding:11px;background:#25d366;border:none;border-radius:var(--r);color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.btn-wa:hover{background:#1da851}
+.btn-email{padding:11px;background:#1a4f8a;border:none;border-radius:var(--r);color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.btn-email:hover{background:#0f3260}
+.qr-wrap{text-align:center;padding:16px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r)}
+.qr-wrap p{font-size:12px;color:var(--g400);margin-top:10px}
+#qrCanvas{display:block;margin:0 auto;border-radius:6px}
+.btn-new{width:100%;padding:11px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);color:var(--g600);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:12px;transition:background .15s}
+.btn-new:hover{background:var(--g100)}
+/* HISTORY */
+.hist-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--g100)}
+.hist-item:last-child{border-bottom:none}
+.hist-info{flex:1}
+.hist-name{font-size:14px;font-weight:500}
+.hist-meta{font-size:11px;color:var(--g400);margin-top:2px}
+.btn-reopen{padding:5px 12px;background:var(--red-light);border:1px solid #e8bec4;border-radius:5px;color:var(--red-dark);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+.empty-hist{text-align:center;padding:20px;color:var(--g400);font-size:13px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--g800);color:#fff;padding:12px 22px;border-radius:8px;font-size:13px;font-weight:500;z-index:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#2d7a50}
+@media(max-width:600px){.fg-grid{grid-template-columns:1fr}.fg.s2{grid-column:span 1}.phi img{height:36px}.share-btns{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="ph">
+  <div class="phi">
+    <img src="Intestazione ok_NO ISO.png" alt="Bruno Balducci S.r.l.">
+    <div class="phm"><h1>MDINT</h1><p>Pannello Ufficio · Rev. 01</p></div>
+  </div>
+</div>
+
+<div class="con">
+
+  <div class="intro">
+    <div class="intro-icon">🏢</div>
+    <div class="intro-text">
+      <h2>Pannello Ufficio</h2>
+      <p>Compila i dati del cliente e genera il link da inviare all'operatore. Il form si aprirà già precompilato con le informazioni inserite qui.</p>
+    </div>
+  </div>
+
+  <!-- FORM UFFICIO -->
+  <div class="card" id="formCard">
+    <div class="ch">
+      <div class="cn">1</div>
+      <div class="ct">Dati Cliente &amp; Commessa</div>
+    </div>
+    <div class="cb">
+      <div class="fg-grid">
+        <div class="fg s2">
+          <label class="lbl">Nome Cliente *</label>
+          <input type="text" id="fCliente" placeholder="Es. Rossi S.r.l." required>
+        </div>
+        <div class="fg s2">
+          <label class="lbl">Indirizzo</label>
+          <input type="text" id="fIndirizzo" placeholder="Via, numero, città, CAP">
+        </div>
+        <div class="fg">
+          <label class="lbl">Telefono</label>
+          <input type="tel" id="fTel" placeholder="Es. 030 1234567">
+        </div>
+        <div class="fg">
+          <label class="lbl">Mail</label>
+          <input type="email" id="fMail" placeholder="Es. info@cliente.it">
+        </div>
+        <div class="fg">
+          <label class="lbl">N° Commessa</label>
+          <input type="text" id="fComm" placeholder="Es. 2025-0042">
+        </div>
+        <div class="fg">
+          <label class="lbl">Data Intervento</label>
+          <input type="date" id="fData">
+        </div>
+        <div class="fg s2">
+          <label class="lbl">Ultima Manutenzione</label>
+          <input type="text" id="fUltima" placeholder="Es. 15/05/2024 oppure Mai">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATI IMPIANTO (opzionale) -->
+  <div class="card">
+    <div class="ch">
+      <div class="cn" style="background:var(--g400)">2</div>
+      <div class="ct">Dati Impianto <span style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--g400)">(opzionale — precompila per l'operatore)</span></div>
+    </div>
+    <div class="cb">
+      <div class="fg-grid">
+        <div class="fg full">
+          <label class="lbl">Nome / Denominazione Impianto</label>
+          <input type="text" id="fImpNome" placeholder="Es. Depolveratore reparto verniciatura">
+        </div>
+        <div class="fg">
+          <label class="lbl">Marca Depolveratore</label>
+          <input type="text" id="fImpMarcaDepolv" placeholder="Es. Camfil">
+        </div>
+        <div class="fg">
+          <label class="lbl">N° Matricola Filtro</label>
+          <input type="text" id="fImpMatFiltro" placeholder="Es. CF-2019-4421">
+        </div>
+        <div class="fg">
+          <label class="lbl">Marca Ventilatore</label>
+          <input type="text" id="fImpMarcaVent" placeholder="Es. Ziehl-Abegg">
+        </div>
+        <div class="fg">
+          <label class="lbl">N° Matricola Ventilatore</label>
+          <input type="text" id="fImpMatVent" placeholder="Es. ZA-2019-8832">
+        </div>
+        <div class="fg">
+          <label class="lbl">Anno di Fornitura</label>
+          <input type="text" id="fImpAnno" placeholder="Es. 2019">
+        </div>
+        <div class="fg">
+          <label class="lbl">Emissione N°</label>
+          <input type="text" id="fImpEmissione" placeholder="Es. E-07">
+        </div>
+        <div class="fg">
+          <label class="lbl">N° Elementi</label>
+          <input type="text" id="fImpNElem" placeholder="Es. 24">
+        </div>
+        <div class="fg">
+          <label class="lbl">Dimensioni</label>
+          <input type="text" id="fImpDim" placeholder="Es. 325 x 660 mm">
+        </div>
+      </div>
+      <div class="fg" style="margin-top:14px">
+        <label class="lbl">Tipologia Filtro</label>
+        <div class="chips">
+          <span class="chip" onclick="this.classList.toggle('active')">Maniche</span>
+          <span class="chip" onclick="this.classList.toggle('active')">Cartucce</span>
+          <span class="chip" onclick="this.classList.toggle('active')">Tasche</span>
+          <span class="chip" onclick="this.classList.toggle('active')">Carbone</span>
+          <span class="chip" onclick="this.classList.toggle('active')">Altro</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-gen" onclick="generateLink()" style="margin-bottom:20px">
+    <span>🔗</span> Genera link per l'operatore
+  </button>
+
+  <!-- RISULTATO -->
+  <div class="result" id="resultBox">
+    <div class="res-head">
+      <span style="font-size:20px">✅</span>
+      <h3>Link generato per <span id="resCliente"></span></h3>
+    </div>
+    <div class="res-body">
+      <p style="font-size:13px;color:var(--g600);margin-bottom:12px">Copia il link o condividilo direttamente:</p>
+      <div class="link-box">
+        <span class="link-text" id="resLink"></span>
+        <button class="btn-copy" onclick="copyLink()">📋 Copia</button>
+      </div>
+      <div class="share-btns">
+        <button class="btn-wa" onclick="shareWhatsApp()">
+          <span>💬</span> Invia su WhatsApp
+        </button>
+        <button class="btn-email" onclick="shareEmail()">
+          <span>✉️</span> Invia via Email
+        </button>
+      </div>
+      <div class="qr-wrap">
+        <p style="font-size:12px;color:var(--g600);margin-bottom:10px;font-weight:500">Oppure scansiona il QR code:</p>
+        <canvas id="qrCanvas" width="180" height="180"></canvas>
+        <p>Mostra questo QR all'operatore per aprire il form</p>
+      </div>
+      <button class="btn-new" onclick="newForm()">+ Nuovo cliente</button>
+    </div>
+  </div>
+
+  <!-- STORICO -->
+  <div class="card">
+    <div class="ch">
+      <div class="cn" style="background:var(--g300);color:var(--g600)">📋</div>
+      <div class="ct">Interventi recenti</div>
+    </div>
+    <div class="cb" id="histBody">
+      <div class="empty-hist">Nessun intervento generato ancora</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- QR Code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIUwMugdddsT35FpeNo-JG-wKapwVfLMq1iXEqtfBiUWwhbdlQwB5Yl8GrZ_jNWLx-3A/exec";
+var BASE_URL = window.location.origin + window.location.pathname.replace('ufficio.html','') + 'index.html';
+var currentLink = '';
+var history_list = [];
+
+// Set today's date
+document.getElementById('fData').valueAsDate = new Date();
+
+function generateLink() {
+  var cliente = document.getElementById('fCliente').value.trim();
+  if (!cliente) { showToast('⚠️ Inserisci almeno il nome del cliente', 'err'); return; }
+
+  var filtroTipi = [];
+  document.querySelectorAll('.chips .chip.active').forEach(function(c){ filtroTipi.push(c.textContent.trim()); });
+
+  var params = new URLSearchParams({
+    cliente:       cliente,
+    indirizzo:     document.getElementById('fIndirizzo').value.trim(),
+    tel:           document.getElementById('fTel').value.trim(),
+    mail:          document.getElementById('fMail').value.trim(),
+    commessa:      document.getElementById('fComm').value.trim(),
+    data:          document.getElementById('fData').value,
+    ultima:        document.getElementById('fUltima').value.trim(),
+    imp_nome:      document.getElementById('fImpNome').value.trim(),
+    imp_marcadepolv: document.getElementById('fImpMarcaDepolv').value.trim(),
+    imp_matfiltro: document.getElementById('fImpMatFiltro').value.trim(),
+    imp_marcavent: document.getElementById('fImpMarcaVent').value.trim(),
+    imp_matvent:   document.getElementById('fImpMatVent').value.trim(),
+    imp_anno:      document.getElementById('fImpAnno').value.trim(),
+    imp_emissione: document.getElementById('fImpEmissione').value.trim(),
+    imp_nelem:     document.getElementById('fImpNElem').value.trim(),
+    imp_dim:       document.getElementById('fImpDim').value.trim(),
+    imp_filtro:    filtroTipi.join(',')
+  });
+
+  currentLink = BASE_URL + '?' + params.toString();
+
+  // Show result
+  document.getElementById('resCliente').textContent = cliente;
+  document.getElementById('resLink').textContent = currentLink;
+  document.getElementById('resultBox').classList.add('show');
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth', block:'start'});
+
+  // Generate QR
+  generateQR(currentLink);
+
+  // Save to history
+  var item = {
+    cliente: cliente,
+    commessa: document.getElementById('fComm').value.trim(),
+    data: document.getElementById('fData').value,
+    link: currentLink,
+    ts: Date.now()
+  };
+  history_list.unshift(item);
+  if (history_list.length > 10) history_list = history_list.slice(0, 10);
+  localStorage.setItem('mdint_history', JSON.stringify(history_list));
+  caricaStorico();
+}
+
+function generateQR(url) {
+  var canvas = document.getElementById('qrCanvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Use QRCode library
+  var div = document.createElement('div');
+  new QRCode(div, {
+    text: url,
+    width: 180,
+    height: 180,
+    colorDark: '#b5253a',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+  setTimeout(function() {
+    var img = div.querySelector('img');
+    if (img) {
+      var i = new Image();
+      i.onload = function() { ctx.drawImage(i, 0, 0, 180, 180); };
+      i.src = img.src;
+    }
+  }, 200);
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(currentLink).then(function() {
+    showToast('✅ Link copiato!', 'ok');
+  }).catch(function() {
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = currentLink;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ Link copiato!', 'ok');
+  });
+}
+
+function shareWhatsApp() {
+  var cliente = document.getElementById('fCliente').value.trim();
+  var commessa = document.getElementById('fComm').value.trim();
+  var msg = '📋 *Rapporto Manutenzione Bruno Balducci*\n\n' +
+            'Cliente: ' + cliente + '\n' +
+            (commessa ? 'Commessa: ' + commessa + '\n' : '') +
+            '\nApri il form qui:\n' + currentLink;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function shareEmail() {
+  var cliente = document.getElementById('fCliente').value.trim();
+  var commessa = document.getElementById('fComm').value.trim();
+  var subj = 'Rapporto Manutenzione - ' + cliente + (commessa ? ' - ' + commessa : '');
+  var body = 'Ciao,\n\ndi seguito il link per compilare il rapporto di manutenzione:\n\n' + currentLink + '\n\nGrazie,\nBruno Balducci S.r.l.';
+  window.location.href = 'mailto:?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
+}
+
+function newForm() {
+  document.getElementById('resultBox').classList.remove('show');
+  document.getElementById('fCliente').value = '';
+  document.getElementById('fIndirizzo').value = '';
+  document.getElementById('fTel').value = '';
+  document.getElementById('fMail').value = '';
+  document.getElementById('fComm').value = '';
+  document.getElementById('fData').valueAsDate = new Date();
+  document.getElementById('fUltima').value = '';
+  document.getElementById('fImpNome').value = '';
+  document.getElementById('fImpMarcaDepolv').value = '';
+  document.getElementById('fImpMatFiltro').value = '';
+  document.getElementById('fImpMarcaVent').value = '';
+  document.getElementById('fImpMatVent').value = '';
+  document.getElementById('fImpAnno').value = '';
+  document.getElementById('fImpEmissione').value = '';
+  document.getElementById('fImpNElem').value = '';
+  document.getElementById('fImpDim').value = '';
+  document.querySelectorAll('.chips .chip.active').forEach(function(c){ c.classList.remove('active'); });
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth', block:'start'});
+  currentLink = '';
+}
+
+function caricaStorico() {
+  fetch(SCRIPT_URL + '?action=leggiStorico')
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res.success && res.data) {
+        history_list = res.data;
+        renderHistory();
+      }
+    })
+    .catch(function() {
+      // fallback silenzioso
+      renderHistory();
+    });
+}
+
+function renderHistory() {
+  var body = document.getElementById('histBody');
+  if (!history_list.length) {
+    body.innerHTML = '<div class="empty-hist">Nessun intervento generato ancora</div>';
+    return;
+  }
+  var html = '';
+  history_list.forEach(function(item) {
+    var d = item.data ? new Date(item.data).toLocaleDateString('it-IT') : 'Data N/D';
+    html += '<div class="hist-item">' +
+      '<div class="hist-info">' +
+        '<div class="hist-name">' + item.cliente + '</div>' +
+        '<div class="hist-meta">' + (item.commessa || 'N° comm. N/D') + ' · ' + d + '</div>' +
+      '</div>' +
+      '<button class="btn-reopen" onclick="reopenLink(\'' + encodeURIComponent(item.link) + '\')">🔗 Riapri link</button>' +
+    '</div>';
+  });
+  body.innerHTML = html;
+}
+
+function reopenLink(encodedLink) {
+  currentLink = decodeURIComponent(encodedLink);
+  document.getElementById('resLink').textContent = currentLink;
+  var urlParams = new URLSearchParams(currentLink.split('?')[1] || '');
+  document.getElementById('resCliente').textContent = urlParams.get('cliente') || 'Cliente';
+  document.getElementById('resultBox').classList.add('show');
+  generateQR(currentLink);
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type === 'ok' ? ' ok' : '');
+  setTimeout(function(){t.className='toast';}, 3000);
+}
+
+caricaStorico();
+</script>
+</body>
+</html>
